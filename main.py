@@ -1,15 +1,9 @@
-from RPLCD.i2c import CharLCD
-import obd
-import time
+import threading
+from src.obd_reader import start_obd_loop
+from src.lcd_display import start_lcd_loop
+from src.web.server import start_web
 
-lcd = CharLCD('PCF8574', 0x27)
-lcd.clear()
-lcd.write_string("Mazda LCD READY")
-
-connection = obd.OBD()
-
-while True:
-    rpm = connection.query(obd.commands.RPM).value
-    lcd.clear()
-    lcd.write_string(f"RPM: {int(rpm) if rpm else 0}")
-    time.sleep(0.2)
+if __name__ == "__main__":
+    threading.Thread(target=start_obd_loop, daemon=True).start()
+    threading.Thread(target=start_lcd_loop, daemon=True).start()
+    start_web()
