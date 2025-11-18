@@ -121,7 +121,7 @@ echo " "
 
 # FINAL CHECKLIST
 echo "============================================"
-printf "=== ${YELLOW}FINAL CHECKLIST${NC} ==="
+printf "=== ${YELLOW}FINAL CHECKLIST${NC} ===\n"
 for cmd in git python3 pip3 pigpiod i2cdetect; do
     if command -v $cmd >/dev/null 2>&1; then
         printf "[${GREEN}OK${NC}] %s installed\n" "$cmd"
