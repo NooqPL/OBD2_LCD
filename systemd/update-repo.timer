@@ -1,0 +1,9 @@
+[Unit]
+Description=Auto update Git repository for OBD2 LCD project
+
+[Timer]
+OnBootSec=30
+OnUnitActiveSec=600   # sprawdzaj aktualizację co 10 minut
+
+[Install]
+WantedBy=timers.target

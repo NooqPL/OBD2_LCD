@@ -1,0 +1,12 @@
+[Unit]
+Description=Mazda OBD2 LCD
+After=network.target pigpiod.service
+
+[Service]
+User=mx5
+WorkingDirectory=/home/mx5/app
+ExecStart=/home/mx5/app/.venv/bin/python3 /home/mx5/app/main.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

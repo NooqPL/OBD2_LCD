@@ -1,0 +1,10 @@
+[Unit]
+Description=Update Git repository for OBD2 LCD project
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=mx5
+WorkingDirectory=/home/mx5/app
+ExecStart=/usr/bin/git fetch --all
+ExecStart=/usr/bin/git reset --hard origin/main
