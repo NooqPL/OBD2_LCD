@@ -115,7 +115,7 @@ printf " ${YELLOW}Enable services${NC}\n "
 run sudo systemctl enable --now ${SERVICE_NAME}.service
 run sudo systemctl enable --now update-repo.timer
 
-printf "=== ${YELLOW}INSTALL COMPLETE${NC}\n ===" 
+printf "=== ${YELLOW}INSTALL COMPLETE${NC} ===\n" 
 echo " "
 
 
@@ -139,5 +139,5 @@ for svc in pigpiod ${SERVICE_NAME} update-repo.timer; do
 done
 
 echo " "
-printf "${YELLOW}Installation finished. Check above for errors.${NC}"
+printf "${YELLOW}Installation finished. Check above for errors.${NC}\n"
 echo " "
