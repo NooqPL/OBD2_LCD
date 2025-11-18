@@ -20,15 +20,17 @@ run() {
     fi
 }
 
-# ============================================
-# SYSTEM UPDATE
-# ============================================
+echo "============================================"
+echo " SYSTEM UPDATE "
+echo "============================================"
+
 run sudo apt update
 run sudo apt upgrade -y
 
-# ============================================
-# INSTALL DEPENDENCIES
-# ============================================
+
+echo "============================================"
+echo " INSTALL DEPENDENCIES "
+echo "============================================"
 run sudo apt install -y \
     git \
     pigpio \
@@ -39,17 +41,23 @@ run sudo apt install -y \
     i2c-tools \
     avahi-daemon avahi-utils    # // CHANGED: added mDNS packages
 
-# ============================================
-# ENABLE I²C // CHANGED
-# ============================================
+
+echo "============================================"
+echo " ENABLE I²C // CHANGED "
+echo "============================================"
 run sudo raspi-config nonint do_i2c 0
 
+
+
+
 # Enable pigpio daemon
+echo "Enable pigpio daemon"
 run sudo systemctl enable --now pigpiod
 
-# ============================================
-# CLONE OR UPDATE REPO
-# ============================================
+
+echo "============================================"
+echo " CLONE OR UPDATE REPO "
+echo "============================================"
 if [ -d "$APP_DIR" ]; then
     echo "Repository already exists. Updating..."
     run sudo -u $USER_NAME git -C "$APP_DIR" fetch --all
@@ -61,9 +69,9 @@ fi
 
 cd "$APP_DIR"
 
-# ============================================
-# CREATE VENV
-# ============================================
+echo "============================================"
+echo " CREATE VENV "
+echo "============================================"
 if [ ! -d ".venv" ]; then
     run sudo -u $USER_NAME python3 -m venv .venv
 fi
@@ -71,13 +79,14 @@ fi
 # Upgrade pip
 run sudo -u $USER_NAME .venv/bin/pip install --upgrade pip
 
-# ============================================
-# PYTHON DEPENDENCIES
-# ============================================
+echo "============================================"
+echo " PYTHON DEPENDENCIES "
+echo "============================================"
 run sudo -u $USER_NAME .venv/bin/pip install \
     obd \
     RPLCD \
     pigpio \
+    flask \
     smbus2               # // CHANGED: added smbus2 manually
 
 # Flask if using web UI
@@ -87,13 +96,14 @@ if [ ! -z "$(grep -R \"from flask\" -n src 2>/dev/null)" ]; then
 fi
 
 # Install requirements if file exists
+echo " Install requirements if file exists "
 if [ -f "requirements.txt" ]; then
     run sudo -u $USER_NAME .venv/bin/pip install -r requirements.txt
 fi
 
-# ============================================
-# COPY SYSTEMD SERVICES
-# ============================================
+echo "============================================"
+echo " COPY SYSTEMD SERVICES "
+echo "============================================"
 run sudo cp systemd/${SERVICE_NAME}.service /etc/systemd/system/
 run sudo cp systemd/update-repo.service /etc/systemd/system/
 run sudo cp systemd/update-repo.timer /etc/systemd/system/
@@ -101,15 +111,16 @@ run sudo cp systemd/update-repo.timer /etc/systemd/system/
 run sudo systemctl daemon-reload
 
 # Enable services
+echo " Enable services "
 run sudo systemctl enable --now ${SERVICE_NAME}.service
 run sudo systemctl enable --now update-repo.timer
 
-echo "=== INSTALL COMPLETE ==="
+echo "=== INSTALL COMPLETE ===" 
 echo " "
 
-# ============================================
+
 # FINAL CHECKLIST
-# ============================================
+echo "============================================"
 echo "=== FINAL CHECKLIST ==="
 for cmd in git python3 pip3 pigpiod i2cdetect; do
     if command -v $cmd >/dev/null 2>&1; then

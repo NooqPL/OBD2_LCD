@@ -1,12 +1,26 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="refresh" content="1">
-    <title>MX-5 Dashboard</title>
+    <title>MX5 Web Panel</title>
+    <style>
+        body {
+            background: #111;
+            color: #eee;
+            font-family: Arial;
+            text-align: center;
+            margin-top: 80px;
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        p { font-size: 20px; opacity: 0.8; }
+    </style>
 </head>
 <body>
-    <h1>Mazda MX-5 NC Dashboard</h1>
-    <p>RPM: {{ data.rpm }}</p>
-    <p>Speed: {{ data.speed }} km/h</p>
-    <p>Coolant Temp: {{ data.coolant }} °C</p>
+    <h1>MX-5 Control Panel</h1>
+    <p>System działa poprawnie!</p>
+    <p>LCD: wyłączony</p>
+    <p>OBD2: wyłączone</p>
 </body>
 </html>
