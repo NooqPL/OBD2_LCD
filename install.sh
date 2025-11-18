@@ -13,7 +13,6 @@ NC="\033[0m" # No Color
 
 echo "=== mx5 installer ==="
 
-# Function to run commands and report errors
 run() {
     echo ">>> Running: $*"
     if ! "$@"; then
@@ -21,11 +20,15 @@ run() {
     fi
 }
 
-# Update system
+# ============================================
+# SYSTEM UPDATE
+# ============================================
 run sudo apt update
 run sudo apt upgrade -y
 
-# Install dependencies
+# ============================================
+# INSTALL DEPENDENCIES
+# ============================================
 run sudo apt install -y \
     git \
     pigpio \
@@ -33,12 +36,20 @@ run sudo apt install -y \
     python3-pip \
     python3-venv \
     python3-smbus \
-    i2c-tools
+    i2c-tools \
+    avahi-daemon avahi-utils    # // CHANGED: added mDNS packages
+
+# ============================================
+# ENABLE I²C // CHANGED
+# ============================================
+run sudo raspi-config nonint do_i2c 0
 
 # Enable pigpio daemon
 run sudo systemctl enable --now pigpiod
 
-# Clone or update repository
+# ============================================
+# CLONE OR UPDATE REPO
+# ============================================
 if [ -d "$APP_DIR" ]; then
     echo "Repository already exists. Updating..."
     run sudo -u $USER_NAME git -C "$APP_DIR" fetch --all
@@ -50,7 +61,9 @@ fi
 
 cd "$APP_DIR"
 
-# Create virtual environment
+# ============================================
+# CREATE VENV
+# ============================================
 if [ ! -d ".venv" ]; then
     run sudo -u $USER_NAME python3 -m venv .venv
 fi
@@ -58,18 +71,29 @@ fi
 # Upgrade pip
 run sudo -u $USER_NAME .venv/bin/pip install --upgrade pip
 
-# Install Python dependencies for OBD & LCD
+# ============================================
+# PYTHON DEPENDENCIES
+# ============================================
 run sudo -u $USER_NAME .venv/bin/pip install \
     obd \
     RPLCD \
-    pigpio
+    pigpio \
+    smbus2               # // CHANGED: added smbus2 manually
 
-# Install requirements if exist
+# Flask if using web UI
+if [ ! -z "$(grep -R \"from flask\" -n src 2>/dev/null)" ]; then
+    echo "Detected Flask usage — installing Flask"   # // CHANGED
+    run sudo -u $USER_NAME .venv/bin/pip install flask
+fi
+
+# Install requirements if file exists
 if [ -f "requirements.txt" ]; then
     run sudo -u $USER_NAME .venv/bin/pip install -r requirements.txt
 fi
 
-# Copy systemd services
+# ============================================
+# COPY SYSTEMD SERVICES
+# ============================================
 run sudo cp systemd/${SERVICE_NAME}.service /etc/systemd/system/
 run sudo cp systemd/update-repo.service /etc/systemd/system/
 run sudo cp systemd/update-repo.timer /etc/systemd/system/
@@ -83,7 +107,9 @@ run sudo systemctl enable --now update-repo.timer
 echo "=== INSTALL COMPLETE ==="
 echo " "
 
-# Final checklist
+# ============================================
+# FINAL CHECKLIST
+# ============================================
 echo "=== FINAL CHECKLIST ==="
 for cmd in git python3 pip3 pigpiod i2cdetect; do
     if command -v $cmd >/dev/null 2>&1; then
