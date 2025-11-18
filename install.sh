@@ -11,7 +11,7 @@ GREEN="\033[0;32m"
 YELLOW="\033[1;33m"
 NC="\033[0m" # No Color
 
-echo "=== mx5 installer ==="
+printf "=== ${YELLOW}mx5 installer${NC} ==="
 
 run() {
     echo ">>> Running: $*"
@@ -21,7 +21,7 @@ run() {
 }
 
 echo "============================================"
-echo " SYSTEM UPDATE "
+printf " ${YELLOW}SYSTEM UPDATE${NC} "
 echo "============================================"
 
 run sudo apt update
@@ -29,7 +29,7 @@ run sudo apt upgrade -y
 
 
 echo "============================================"
-echo " INSTALL DEPENDENCIES "
+printf " ${YELLOW}INSTALL DEPENDENCIES${NC} "
 echo "============================================"
 run sudo apt install -y \
     git \
@@ -43,7 +43,7 @@ run sudo apt install -y \
 
 
 echo "============================================"
-echo " ENABLE I²C // CHANGED "
+printf " ${YELLOW}ENABLE I²C // CHANGED${NC} "
 echo "============================================"
 run sudo raspi-config nonint do_i2c 0
 
@@ -51,26 +51,26 @@ run sudo raspi-config nonint do_i2c 0
 
 
 # Enable pigpio daemon
-echo "Enable pigpio daemon"
+printf "${YELLOW}Enable pigpio daemon${NC}"
 run sudo systemctl enable --now pigpiod
 
 
 echo "============================================"
-echo " CLONE OR UPDATE REPO "
+printf " ${YELLOW}CLONE OR UPDATE REPO${NC} "
 echo "============================================"
 if [ -d "$APP_DIR" ]; then
-    echo "Repository already exists. Updating..."
+    printf "${YELLOW}Repository already exists. Updating...${NC}"
     run sudo -u $USER_NAME git -C "$APP_DIR" fetch --all
     run sudo -u $USER_NAME git -C "$APP_DIR" reset --hard origin/main
 else
-    echo "Cloning repository..."
+    printf "${YELLOW}Cloning repository...${NC}"
     run sudo -u $USER_NAME git clone "$REPO_URL" "$APP_DIR"
 fi
 
 cd "$APP_DIR"
 
 echo "============================================"
-echo " CREATE VENV "
+printf " ${YELLOW}CREATE VENV${NC} "
 echo "============================================"
 if [ ! -d ".venv" ]; then
     run sudo -u $USER_NAME python3 -m venv .venv
@@ -80,7 +80,7 @@ fi
 run sudo -u $USER_NAME .venv/bin/pip install --upgrade pip
 
 echo "============================================"
-echo " PYTHON DEPENDENCIES "
+printf " ${YELLOW}PYTHON DEPENDENCIES${NC} "
 echo "============================================"
 run sudo -u $USER_NAME .venv/bin/pip install \
     obd \
@@ -91,18 +91,18 @@ run sudo -u $USER_NAME .venv/bin/pip install \
 
 # Flask if using web UI
 if [ ! -z "$(grep -R \"from flask\" -n src 2>/dev/null)" ]; then
-    echo "Detected Flask usage — installing Flask"   # // CHANGED
+    printf "${YELLOW}Detected Flask usage — installing Flask${NC}"   # // CHANGED
     run sudo -u $USER_NAME .venv/bin/pip install flask
 fi
 
 # Install requirements if file exists
-echo " Install requirements if file exists "
+printf " ${YELLOW}Install requirements if file exists${NC} "
 if [ -f "requirements.txt" ]; then
     run sudo -u $USER_NAME .venv/bin/pip install -r requirements.txt
 fi
 
 echo "============================================"
-echo " COPY SYSTEMD SERVICES "
+echo " ${YELLOW}COPY SYSTEMD SERVICES${NC} "
 echo "============================================"
 run sudo cp systemd/${SERVICE_NAME}.service /etc/systemd/system/
 run sudo cp systemd/update-repo.service /etc/systemd/system/
@@ -111,17 +111,17 @@ run sudo cp systemd/update-repo.timer /etc/systemd/system/
 run sudo systemctl daemon-reload
 
 # Enable services
-echo " Enable services "
+printf " ${YELLOW}Enable services${NC} "
 run sudo systemctl enable --now ${SERVICE_NAME}.service
 run sudo systemctl enable --now update-repo.timer
 
-echo "=== INSTALL COMPLETE ===" 
+printf "=== ${YELLOW}INSTALL COMPLETE${NC} ===" 
 echo " "
 
 
 # FINAL CHECKLIST
 echo "============================================"
-echo "=== FINAL CHECKLIST ==="
+printf "=== ${YELLOW}FINAL CHECKLIST${NC} ==="
 for cmd in git python3 pip3 pigpiod i2cdetect; do
     if command -v $cmd >/dev/null 2>&1; then
         printf "[${GREEN}OK${NC}] %s installed\n" "$cmd"
@@ -139,5 +139,5 @@ for svc in pigpiod ${SERVICE_NAME} update-repo.timer; do
 done
 
 echo " "
-echo "Installation finished. Check above for errors."
+printf "${YELLOW}Installation finished. Check above for errors.${NC}"
 echo " "
