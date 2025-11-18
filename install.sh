@@ -11,7 +11,7 @@ GREEN="\033[0;32m"
 YELLOW="\033[1;33m"
 NC="\033[0m" # No Color
 
-printf "=== ${YELLOW}mx5 installer${NC}\n ==="
+printf "=== ${YELLOW}mx5 installer${NC} ==="
 
 run() {
     echo ">>> Running: $*"
@@ -21,7 +21,7 @@ run() {
 }
 
 echo "============================================"
-printf " ${YELLOW}SYSTEM UPDATE${NC}\n "
+printf " ${YELLOW}SYSTEM UPDATE${NC}\n"
 echo "============================================"
 
 run sudo apt update
@@ -29,7 +29,7 @@ run sudo apt upgrade -y
 
 
 echo "============================================"
-printf " ${YELLOW}INSTALL DEPENDENCIES${NC}\n "
+printf " ${YELLOW}INSTALL DEPENDENCIES${NC}\n"
 echo "============================================"
 run sudo apt install -y \
     git \
@@ -43,7 +43,7 @@ run sudo apt install -y \
 
 
 echo "============================================"
-printf " ${YELLOW}ENABLE I²C // CHANGED${NC}\n "
+printf " ${YELLOW}ENABLE I²C // CHANGED${NC}\n"
 echo "============================================"
 run sudo raspi-config nonint do_i2c 0
 
@@ -56,7 +56,7 @@ run sudo systemctl enable --now pigpiod
 
 
 echo "============================================"
-printf " ${YELLOW}CLONE OR UPDATE REPO${NC}\n "
+printf " ${YELLOW}CLONE OR UPDATE REPO${NC}\n"
 echo "============================================"
 if [ -d "$APP_DIR" ]; then
     printf "${YELLOW}Repository already exists. Updating...${NC}\n"
@@ -70,7 +70,7 @@ fi
 cd "$APP_DIR"
 
 echo "============================================"
-printf " ${YELLOW}CREATE VENV${NC}\n "
+printf " ${YELLOW}CREATE VENV${NC}\n"
 echo "============================================"
 if [ ! -d ".venv" ]; then
     run sudo -u $USER_NAME python3 -m venv .venv
@@ -80,7 +80,7 @@ fi
 run sudo -u $USER_NAME .venv/bin/pip install --upgrade pip
 
 echo "============================================"
-printf " ${YELLOW}PYTHON DEPENDENCIES${NC}\n "
+printf " ${YELLOW}PYTHON DEPENDENCIES${NC}\n"
 echo "============================================"
 run sudo -u $USER_NAME .venv/bin/pip install \
     obd \
@@ -102,7 +102,7 @@ if [ -f "requirements.txt" ]; then
 fi
 
 echo "============================================"
-printf " ${YELLOW}COPY SYSTEMD SERVICES${NC}\n "
+printf " ${YELLOW}COPY SYSTEMD SERVICES${NC}\n"
 echo "============================================"
 run sudo cp systemd/${SERVICE_NAME}.service /etc/systemd/system/
 run sudo cp systemd/update-repo.service /etc/systemd/system/
@@ -121,7 +121,7 @@ echo " "
 
 # FINAL CHECKLIST
 echo "============================================"
-printf "=== ${YELLOW}FINAL CHECKLIST${NC}\n ==="
+printf "=== ${YELLOW}FINAL CHECKLIST${NC} ==="
 for cmd in git python3 pip3 pigpiod i2cdetect; do
     if command -v $cmd >/dev/null 2>&1; then
         printf "[${GREEN}OK${NC}] %s installed\n" "$cmd"
