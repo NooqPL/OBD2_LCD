@@ -30,7 +30,7 @@ run sudo apt upgrade -y
 
 echo "============================================"
 printf " ${YELLOW}INSTALL DEPENDENCIES${NC}\n"
-echo "============================================"
+echo "============================================"  
 run sudo apt install -y \
     git \
     pigpio \
@@ -39,6 +39,11 @@ run sudo apt install -y \
     python3-venv \
     python3-smbus \
     i2c-tools \
+    libjpeg-dev \
+    zlib1g-dev \
+    libfreetype-dev \
+    libopenjp2-7-dev \
+    libtiff-dev \
     avahi-daemon avahi-utils    # // CHANGED: added mDNS packages
 
 
