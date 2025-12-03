@@ -35,7 +35,7 @@ def start_lcd_loop():
             lcd.write_string("Raspberry Pi Zero\n")
             lcd.cursor_pos = (1, 0)
             lcd.write_string("LCD 4x16 I2C OK\n")
-            lcd.cursor_pos = (2, 0)
+            lcd.cursor_pos = (3, 0)
             lcd.write_string(f"Counter: {counter}")
             counter += 1
             time.sleep(1)

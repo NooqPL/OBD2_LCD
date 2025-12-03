@@ -39,6 +39,7 @@ run sudo apt install -y \
     python3-venv \
     python3-smbus \
     i2c-tools \
+    python3-u8g2 \
     avahi-daemon avahi-utils    # // CHANGED: added mDNS packages
 
 
