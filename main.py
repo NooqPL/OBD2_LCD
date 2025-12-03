@@ -1,6 +1,9 @@
 import threading
 import time
 
+
+
+i2c_lock = threading.Lock()
 print("=== MX5 OBD Display System Boot ===")
 
 # ---------------------------------------------------------
