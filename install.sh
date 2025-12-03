@@ -39,7 +39,6 @@ run sudo apt install -y \
     python3-venv \
     python3-smbus \
     i2c-tools \
-    python3-u8g2 \
     avahi-daemon avahi-utils    # // CHANGED: added mDNS packages
 
 
@@ -53,7 +52,9 @@ run sudo raspi-config nonint do_i2c 0
 
 # Enable pigpio daemon
 printf "${YELLOW}Enable pigpio daemon${NC}\n"
-run sudo systemctl enable --now pigpiod
+sudo systemctl stop pigpiod 2>/dev/null || true
+sudo pigpiod
+
 
 
 echo "============================================"
@@ -88,6 +89,7 @@ run sudo -u $USER_NAME .venv/bin/pip install \
     RPLCD \
     pigpio \
     flask \
+    u8g2-python \
     smbus2               # // CHANGED: added smbus2 manually
 
 # Flask if using web UI
@@ -115,6 +117,14 @@ run sudo systemctl daemon-reload
 printf " ${YELLOW}Enable services${NC}\n "
 run sudo systemctl enable --now ${SERVICE_NAME}.service
 run sudo systemctl enable --now update-repo.timer
+
+printf " ${YELLOW}Enabling pigpiod at boot (rc.local)...${NC}\n "
+if ! grep -q "pigpiod &" /etc/rc.local; then
+    sudo sed -i '/^exit 0/i pigpiod &\n' /etc/rc.local
+fi
+printf " ${YELLOW}[PIGPIO] Starting pigpiod...${NC}\n "
+run sudo killall pigpiod 2>/dev/null || true
+run sudo pigpiod
 
 
 
