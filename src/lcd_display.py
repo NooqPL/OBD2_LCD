@@ -1,5 +1,5 @@
 import time
-
+from main import i2c_lock
 try:
     from RPLCD.i2c import CharLCD
 except Exception as e:
@@ -28,22 +28,22 @@ def start_lcd_loop():
 
     counter = 0
 
-    try:
-        while True:
-            with i2c_lock:
-                lcd.clear()
-                lcd.cursor_pos = (0, 0)
-                lcd.write_string("Raspberry Pi Zero\n")
-                lcd.cursor_pos = (1, 0)
-                lcd.write_string("LCD 4x16 I2C OK\n")
-                lcd.cursor_pos = (3, 0)
-                lcd.write_string(f"Counter: {counter}")
-            counter += 1
-            time.sleep(1)
+   # try:
+    while True:
+        with i2c_lock:
+            lcd.clear()
+            lcd.cursor_pos = (0, 0)
+            lcd.write_string("Raspberry Pi Zero\n")
+            lcd.cursor_pos = (1, 0)
+            lcd.write_string("LCD 4x16 I2C OK\n")
+            lcd.cursor_pos = (3, 0)
+            lcd.write_string(f"Counter: {counter}")
+        counter += 1
+        time.sleep(1)
 
-    except KeyboardInterrupt:
-        lcd.clear()
-        lcd.write_string("Exiting...")
-        time.sleep(0.5)
-        lcd.clear()
-        print("[LCD] Stopped.")
+    #except KeyboardInterrupt:
+     #   lcd.clear()
+     #   lcd.write_string("Exiting...")
+     #   time.sleep(0.5)
+     #   lcd.clear()
+     #   print("[LCD] Stopped.")

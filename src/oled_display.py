@@ -3,6 +3,8 @@ import time
 import traceback
 from threading import Thread
 
+from main import i2c_lock
+
 from luma.core.interface.serial import i2c
 from luma.oled.device import ssd1306
 from PIL import Image, ImageDraw, ImageFont
@@ -32,21 +34,14 @@ def start_oled_loop():
             img = Image.new("1", (width, height))
             draw = ImageDraw.Draw(img)
 
-            # --- ekran startowy / bitmapa ---
             draw.text((10, 10), "MX-5 Booting...", font=font, fill=255)
-
-            # --- OBD status (placeholder) ---
             draw.text((10, 30), "OBD: Not connected", font=font, fill=255)
-
-            # --- przykładowe dane (po podpięciu OBD zastąpić realnymi) ---
             draw.text((10, 45), "Speed: -- km/h", font=font, fill=255)
             draw.text((10, 55), "RPM: --", font=font, fill=255)
 
-            # wyświetlenie obrazu na OLED
             with i2c_lock:
                 device.display(img)
 
-            # odświeżanie co 0.5s
             time.sleep(0.5)
 
         except Exception as e:
