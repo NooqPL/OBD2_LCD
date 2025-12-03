@@ -89,7 +89,8 @@ run sudo -u $USER_NAME .venv/bin/pip install \
     RPLCD \
     pigpio \
     flask \
-    u8g2-python \
+    luma.oled \
+    pillow \
     smbus2               # // CHANGED: added smbus2 manually
 
 # Flask if using web UI
