@@ -20,7 +20,7 @@ def start_lcd_loop():
         i2c_expander='PCF8574',
         address=0x27,           # <-- zmień jeśli masz inny adres
         port=1,
-        cols=16,
+        cols=20,
         rows=4,
         charmap='A02',
         
