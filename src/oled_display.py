@@ -1,8 +1,10 @@
 # src/oled_display.py
 import time
 import traceback
-from threading import Thread
+import obd
 
+
+from threading import Thread
 from src.i2c_lock import lock as i2c_lock
 
 from luma.core.interface.serial import i2c
@@ -36,9 +38,37 @@ def start_oled_loop():
             draw = ImageDraw.Draw(img)
 
             draw.text((10, 10), "MX-5 Booting...", font=font, fill=255)
-            draw.text((10, 30), "OBD: Not connected", font=font, fill=255)
+
+
+            
+            try:
+                connection = obd.Async()
+            except:
+                draw.text((10, 30), "[OBD] ERROR NoAdFo", font=font, fill=255)
+                return
+
+            if connection.is_connected():
+                draw.text((10, 30), "[OBD] Connected", font=font, fill=255)
+                
+
+            else:
+                draw.text((10, 30), "[OBD] Not connected", font=font, fill=255)
+                return
+
+
+
+
+
+
+
             draw.text((10, 45), f"Speed: {counter} km/h", font=font, fill=255)
+
+
+
             draw.text((10, 55), f"RPM: {counter+1}", font=font, fill=255)
+
+
+
 
             with i2c_lock:
                 device.display(img)
