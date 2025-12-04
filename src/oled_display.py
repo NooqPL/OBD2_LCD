@@ -3,7 +3,7 @@ import time
 import traceback
 from threading import Thread
 
-from main import i2c_lock
+from src.i2c_lock import lock as i2c_lock
 
 from luma.core.interface.serial import i2c
 from luma.oled.device import ssd1306
