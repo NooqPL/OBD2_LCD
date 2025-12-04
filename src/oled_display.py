@@ -15,17 +15,16 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 
-
-#def get_ip():
-#    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-#    try:
-#        s.connect(("8.8.8.8", 80))
-#        ip = s.getsockname()[0]
-#    except:
-#        ip = "Brak IP"
-#    finally:
-#        s.close()
-#    return ip
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+    except:
+        ip = "Brak IP"
+    finally:
+        s.close()
+    return ip
 
 
 def start_oled_loop():
@@ -75,8 +74,8 @@ def start_oled_loop():
 
 
 
-            #ip = get_ip()
-            #draw.text((10, 55), f"IP: {ip}", font=font, fill=255)
+            ip = get_ip()
+            draw.text((10, 55), f"IP: {ip}", font=font, fill=255)
 
 
 
