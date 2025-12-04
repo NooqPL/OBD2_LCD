@@ -40,6 +40,14 @@ except Exception as e:
         print("[IP] Failed to load module:")
     ip_available = False
 
+# --- BlueTooth -------------------------------------------
+try:
+    from src.bluetooth_setup import setup_bluetooth
+    bt_available = True
+except Exception as e:
+    def setup_bluetooth():
+        print("[BT] Failed to load module:")
+    bt_available = False
 
 
 # --- OLED ------------------------------------------------
@@ -86,6 +94,17 @@ if __name__ == "__main__":
         threading.Thread(target=start_oled_loop, daemon=True).start()
     else:
         print("[MAIN] OLED not available, skipped.")
+
+
+    # --- BLUETOOTH THREAD ---
+    if bt_available:
+        elm_mac = "XX:XX:XX:XX:XX:XX"  # <-- tutaj wpisz MAC swojego ELM327
+        print(f"[MAIN] Starting Bluetooth setup for {elm_mac}...")
+        threading.Thread(target=setup_bluetooth, args=(elm_mac,), daemon=True).start()
+    else:
+        print("[MAIN] Bluetooth not available, skipped.")
+
+
 
     # --- WEB SERVER (MAIN THREAD) ---
     print("\n[MAIN] Starting Web UI...")

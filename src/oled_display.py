@@ -20,7 +20,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 def start_oled_loop():
-    print("[OLED] Initializing...")
+    print("[OLED] Initializing...\n")
 
     try:
         # --- konfiguracja OLED SSD1306 128x64 na I2C 0x3C ---

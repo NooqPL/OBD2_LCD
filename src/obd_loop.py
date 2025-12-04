@@ -4,7 +4,7 @@ import obd
 from src.data_model import obd_data
 
 def start_obd_loop():
-    print("[OBD] Connecting to OBD...")
+    print("[OBD] Connecting to OBD...\n")
 
     try:
         connection = obd.Async()
