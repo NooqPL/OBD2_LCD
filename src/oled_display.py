@@ -2,7 +2,7 @@
 import time
 import traceback
 import obd
-
+import socket
 
 from threading import Thread
 from src.i2c_lock import lock as i2c_lock
@@ -10,6 +10,20 @@ from src.i2c_lock import lock as i2c_lock
 from luma.core.interface.serial import i2c
 from luma.oled.device import ssd1306
 from PIL import Image, ImageDraw, ImageFont
+
+
+
+def get_ip():
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+    except:
+        ip = "Brak IP"
+    finally:
+        s.close()
+    return ip
+
 
 def start_oled_loop():
     print("[OLED] Initializing...")
@@ -65,7 +79,8 @@ def start_oled_loop():
 
 
 
-            draw.text((10, 55), f"RPM: {counter+1}", font=font, fill=255)
+            ip = get_ip()
+            draw.text((10, 55), f"IP: {ip}", font=font, fill=255)
 
 
 
