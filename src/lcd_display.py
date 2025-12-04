@@ -42,7 +42,7 @@ def start_lcd_loop():
            lcd.write_string("System Test\n") 
            #lcd.write_string(f"Counter: {counter}") 
            #counter += 1 
-           #time.sleep(1)
+           time.sleep(1)
            
     #except KeyboardInterrupt:
      #   lcd.clear()
