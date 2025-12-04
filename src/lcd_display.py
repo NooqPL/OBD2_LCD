@@ -8,8 +8,9 @@ except Exception as e:
 
 
 def start_lcd_loop():
+    print("[LCD] Initializing...")
     if CharLCD is None:
-        print("[LCD] Skipping LCD loop – no LCD connected.")
+        print("[LCD] Skipping LCD loop - no LCD connected.")
         return
 
     # --- KONFIGURACJA LCD (DOSTOSUJ ADRES!) ---
