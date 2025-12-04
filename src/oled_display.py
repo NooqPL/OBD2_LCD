@@ -28,6 +28,7 @@ def start_oled_loop():
     height = device.height
 
     # --- Pętla główna OLED ---
+    counter = 0 
     while True:
         try:
             # nowy obraz
@@ -36,13 +37,14 @@ def start_oled_loop():
 
             draw.text((10, 10), "MX-5 Booting...", font=font, fill=255)
             draw.text((10, 30), "OBD: Not connected", font=font, fill=255)
-            draw.text((10, 45), "Speed: -- km/h", font=font, fill=255)
-            draw.text((10, 55), "RPM: --", font=font, fill=255)
+            draw.text((10, 45), f"Speed: {counter} km/h", font=font, fill=255)
+            draw.text((10, 55), f"RPM: {counter+1}", font=font, fill=255)
 
             with i2c_lock:
                 device.display(img)
 
-            time.sleep(0.5)
+            counter += 1 
+            time.sleep(1)
 
         except Exception as e:
             print("[OLED] ERROR in loop")
