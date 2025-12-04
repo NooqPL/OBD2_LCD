@@ -11,7 +11,7 @@ GREEN="\033[0;32m"
 YELLOW="\033[1;33m"
 NC="\033[0m" # No Color
 
-printf "=== ${YELLOW}mx5 installer V0.91${NC} ===\n"
+printf "=== ${YELLOW}mx5 installer V0.92${NC} ===\n"
 
 run() {
     echo ">>> Running: $*"
