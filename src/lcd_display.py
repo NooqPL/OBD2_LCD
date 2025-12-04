@@ -28,7 +28,7 @@ def start_lcd_loop():
     time.sleep(0.2)
     print("[LCD] LCD started. Loop running...")
 
-    # counter = 0 
+    counter = 0 
 
    # try:
     while True:
@@ -40,8 +40,9 @@ def start_lcd_loop():
            lcd.write_string("LCD 4x16 I2C OK\n") 
            lcd.cursor_pos = (2, 0) 
            lcd.write_string("System Test\n") 
-           #lcd.write_string(f"Counter: {counter}") 
-           #counter += 1 
+           lcd.cursor_pos = (3, 0) 
+           lcd.write_string(f"Counter: {counter}") 
+           counter += 1 
            time.sleep(1)
            
     #except KeyboardInterrupt:
