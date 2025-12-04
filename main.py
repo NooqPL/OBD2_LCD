@@ -4,7 +4,6 @@ import time
 
 
 
-
 print("=== MX5 OBD Display System Boot ===")
 
 # ---------------------------------------------------------
