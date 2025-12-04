@@ -57,22 +57,11 @@ def start_oled_loop():
 
             draw.text((10, 10), "MX-5 Booting...", font=font, fill=255)
 
-
             
-            #try:
-            #    connection = obd.Async()
-            #except:
-            #    draw.text((10, 30), "[OBD] ERROR NoAdFo", font=font, fill=255)
-            #    return
-            
-
-            #if connection.is_connected():
-            #    draw.text((10, 30), "[OBD] Connected", font=font, fill=255)
-                
-
-            #else:
-            #    draw.text((10, 30), "[OBD] Not connected", font=font, fill=255)
-            #    return
+            if obd_data["connected"] == True:
+                draw.text((10, 30), "[OBD] Connected", font=font, fill=255)
+            else:
+                draw.text((10, 30), "[OBD] Not Connected", font=font, fill=255)
 
 
 
