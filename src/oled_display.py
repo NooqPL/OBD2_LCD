@@ -4,7 +4,7 @@ import traceback
 #import obd
 import socket
 
-from src.obd_loop import obd_data
+from src.data_model import obd_data
 
 from threading import Thread
 from src.i2c_lock import lock as i2c_lock
@@ -13,12 +13,7 @@ from luma.core.interface.serial import i2c
 from luma.oled.device import ssd1306
 from PIL import Image, ImageDraw, ImageFont
 
-obd_data = {
-    "connected": False,
-    "speed": 0,
-    "rpm": 0,
-    "temp": 0
-}
+
 
 
 #def get_ip():

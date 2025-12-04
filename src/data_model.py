@@ -1,5 +1,6 @@
-data = {
-    "rpm": 0,
+obd_data = {
+    "connected": False,
     "speed": 0,
-    "coolant": 0
+    "rpm": 0,
+    "temp": 0
 }

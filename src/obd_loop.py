@@ -1,6 +1,7 @@
 import time
 import obd
-from src.oled_display import obd_data
+
+from src.data_model import obd_data
 
 def start_obd_loop():
     print("[OBD] Connecting to OBD...")
