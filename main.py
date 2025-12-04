@@ -31,6 +31,16 @@ except Exception as e:
         print("[LCD] LCD not available")
     lcd_available = False
 
+# --- IP -------------------------------------------------
+try:
+    from src.ip_address import get_ip
+    ip_available = True
+except Exception as e:
+    def get_ip():
+        print("[IP] Failed to load module:")
+    ip_available = False
+
+
 
 # --- OLED ------------------------------------------------
 try:

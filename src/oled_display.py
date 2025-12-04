@@ -2,12 +2,14 @@
 import time
 import traceback
 #import obd
-import socket
+
 
 from src.data_model import obd_data
 
 from threading import Thread
 from src.i2c_lock import lock as i2c_lock
+from src.ip_address import get_ip
+
 
 from luma.core.interface.serial import i2c
 from luma.oled.device import ssd1306
@@ -15,21 +17,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 
 
-def get_ip():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    try:
-        s.connect(("8.8.8.8", 80))
-        ip = s.getsockname()[0]
-    except:
-        ip = "Brak IP"
-    finally:
-        s.close()
-    return ip
 
 
 def start_oled_loop():
     print("[OLED] Initializing...")
-    
 
     try:
         # --- konfiguracja OLED SSD1306 128x64 na I2C 0x3C ---
