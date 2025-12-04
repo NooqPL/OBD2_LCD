@@ -1,5 +1,7 @@
 import time
+
 from src.i2c_lock import lock as i2c_lock
+
 try:
     from RPLCD.i2c import CharLCD
 except Exception as e:
@@ -20,9 +22,8 @@ def start_lcd_loop():
         port=1,
         cols=16,
         rows=4,
-        dotsize=8,
         charmap='A02',
-        auto_linebreaks=True
+        
     )
     time.sleep(0.2)
     print("[LCD] LCD started. Loop running...")
@@ -30,11 +31,11 @@ def start_lcd_loop():
  
 
    # try:
-    #while True:
-    with i2c_lock:
-        lcd.clear()
-        lcd.write_string("Test")
-        time.sleep(1)
+    while True:
+        with i2c_lock:
+           lcd.clear()
+           lcd.write_string("Test")
+           time.sleep(1)
 
     #except KeyboardInterrupt:
      #   lcd.clear()
