@@ -1,8 +1,10 @@
 # src/oled_display.py
 import time
 import traceback
-import obd
+#import obd
 import socket
+
+from src.obd_loop import obd_data
 
 from threading import Thread
 from src.i2c_lock import lock as i2c_lock
@@ -11,6 +13,12 @@ from luma.core.interface.serial import i2c
 from luma.oled.device import ssd1306
 from PIL import Image, ImageDraw, ImageFont
 
+obd_data = {
+    "connected": False,
+    "speed": 0,
+    "rpm": 0,
+    "temp": 0
+}
 
 
 def get_ip():
@@ -27,6 +35,7 @@ def get_ip():
 
 def start_oled_loop():
     print("[OLED] Initializing...")
+    
 
     try:
         # --- konfiguracja OLED SSD1306 128x64 na I2C 0x3C ---
@@ -55,27 +64,30 @@ def start_oled_loop():
 
 
             
-            try:
-                connection = obd.Async()
-            except:
-                draw.text((10, 30), "[OBD] ERROR NoAdFo", font=font, fill=255)
-                return
+            #try:
+            #    connection = obd.Async()
+            #except:
+            #    draw.text((10, 30), "[OBD] ERROR NoAdFo", font=font, fill=255)
+            #    return
+            
 
-            if connection.is_connected():
-                draw.text((10, 30), "[OBD] Connected", font=font, fill=255)
+            #if connection.is_connected():
+            #    draw.text((10, 30), "[OBD] Connected", font=font, fill=255)
                 
 
-            else:
-                draw.text((10, 30), "[OBD] Not connected", font=font, fill=255)
-                return
+            #else:
+            #    draw.text((10, 30), "[OBD] Not connected", font=font, fill=255)
+            #    return
 
 
 
 
+            speed = obd_data.get("speed", 0)
+            #rpm = obd_data.get("rpm", 0)
+            #temp = obd_data.get("temp", 0)
 
 
-
-            draw.text((10, 45), f"Speed: {counter} km/h", font=font, fill=255)
+            draw.text((10, 45), f"Speed: {speed} km/h", font=font, fill=255)
 
 
 
