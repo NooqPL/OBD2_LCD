@@ -35,7 +35,7 @@ def start_lcd_loop():
         with i2c_lock:
            lcd.clear() 
            lcd.cursor_pos = (0, 0) 
-           lcd.write_string("Raspberry Pi Zero\n") 
+           lcd.write_string("Raspberry Pi Zerop\n") 
            lcd.cursor_pos = (1, 0) 
            lcd.write_string("LCD 4x16 I2C OK\n") 
            lcd.cursor_pos = (2, 0) 
